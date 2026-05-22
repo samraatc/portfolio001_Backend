@@ -3,18 +3,15 @@ node_modules/
 .pnp
 .pnp.js
 
-# Environment variables
+# Environment variables (NEVER commit real secrets)
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
+!.env.example
+!.env.*.example
 
 # Build outputs
 dist/
 build/
-.next/
-out/
 
 # Logs
 logs/
@@ -24,23 +21,35 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# IDE
+# IDE / editor
 .vscode/
 .idea/
 *.swp
 *.swo
+
+# OS junk
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # Testing
 coverage/
 .nyc_output/
 
-# Uploads (local dev)
-backend/uploads/
-backend/tmp/
+# Uploads / temp (local dev)
+uploads/
+tmp/
 
-# Misc
+# Caches
 .cache/
 .parcel-cache/
+.eslintcache
+*.tsbuildinfo
+
+# Deployment platforms
+.vercel
+.render
+.turbo
+
+# Misc
 *.local

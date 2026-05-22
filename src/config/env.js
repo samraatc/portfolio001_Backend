@@ -22,9 +22,13 @@ export const env = {
   port: Number(process.env.PORT || 5000),
   apiPrefix: process.env.API_PREFIX || '/api/v1',
 
+  // Comma-separated list of allowed origins. We normalize each one
+  // (lowercase + strip trailing slash) so a value like
+  //   "https://foo.com/ , HTTPS://Bar.com"
+  // still matches the browser's exact `Origin` header.
   clientOrigins: (process.env.CLIENT_ORIGINS || 'http://localhost:5173,http://localhost:5174')
     .split(',')
-    .map((o) => o.trim())
+    .map((o) => o.trim().replace(/\/+$/, '').toLowerCase())
     .filter(Boolean),
 
   mongoUri: required('MONGO_URI', 'mongodb://localhost:27017/portfolio'),
