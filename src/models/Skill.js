@@ -11,7 +11,11 @@ const skillSchema = new mongoose.Schema(
       index: true,
     },
     proficiency: { type: Number, required: true, min: 0, max: 100, default: 70 },
-    icon: { type: String, default: '' }, // lucide name or url
+    icon: { type: String, default: '' }, // lucide name or image URL
+    // Cloudinary publicId for the uploaded icon (empty when icon is a
+    // lucide name or an external URL). Stored so we can delete the asset
+    // when the skill is removed or its icon is replaced.
+    iconPublicId: { type: String, default: '' },
     iconColor: { type: String, default: '#6366f1' },
     description: { type: String, trim: true, maxlength: 500 },
     yearsOfExperience: { type: Number, min: 0, default: 0 },
