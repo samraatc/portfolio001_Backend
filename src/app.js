@@ -96,6 +96,19 @@ app.get('/health', (_req, res) => {
   res.json({ success: true, status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Friendly landing for the bare URL so curl/Postman/Render's health UI
+// don't see a confusing 404. Real endpoints live under env.apiPrefix.
+app.get('/', (_req, res) => {
+  res.json({
+    success: true,
+    name: 'Portfolio API',
+    version: '1.0.0',
+    status: 'running',
+    docs: env.apiPrefix,
+    health: '/health',
+  });
+});
+
 app.use(env.apiPrefix, apiRouter);
 
 app.use(notFound);
