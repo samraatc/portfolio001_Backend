@@ -2,8 +2,10 @@ import { Router } from 'express';
 import { Blog } from '../models/Blog.js';
 import { crudController } from '../controllers/crud.factory.js';
 import { protect, adminOnly } from '../middleware/auth.middleware.js';
+import { validate } from '../middleware/validate.middleware.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { ok } from '../utils/ApiResponse.js';
+import { createBlogSchema, updateBlogSchema } from '../validators/blog.validator.js';
 
 const ctrl = crudController(Blog, {
   searchFields: ['title', 'excerpt', 'content'],
@@ -29,8 +31,8 @@ router.post('/:id/view', asyncHandler(async (req, res) => {
   return ok(res, null, 'View recorded');
 }));
 
-router.post('/', protect, adminOnly, ctrl.createOne);
-router.patch('/:id', protect, adminOnly, ctrl.updateOne);
+router.post('/', protect, adminOnly, validate(createBlogSchema), ctrl.createOne);
+router.patch('/:id', protect, adminOnly, validate(updateBlogSchema), ctrl.updateOne);
 router.delete('/:id', protect, adminOnly, ctrl.deleteOne);
 
 export default router;

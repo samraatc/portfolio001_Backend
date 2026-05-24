@@ -73,12 +73,17 @@ export const crudController = (Model, options = {}) => {
     let payload = req.body;
     if (beforeUpdate) payload = (await beforeUpdate(payload, req)) || payload;
 
-    const item = await Model.findByIdAndUpdate(req.params.id, payload, {
-      new: true,
-      runValidators: true,
-    }).populate(populate);
-
+    // Use findById + .save() so pre('validate') / pre('save') hooks
+    // (slug regeneration, etc.) actually run on updates. findByIdAndUpdate
+    // skips document middleware by default which silently breaks any
+    // model that derives fields from others.
+    const item = await Model.findById(req.params.id);
     if (!item) throw ApiError.notFound(`${Model.modelName} not found`);
+
+    Object.assign(item, payload);
+    await item.save({ validateBeforeSave: true });
+    if (populate.length) await item.populate(populate);
+
     return ok(res, item, `${Model.modelName} updated`);
   });
 

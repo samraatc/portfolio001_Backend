@@ -2,9 +2,11 @@ import { Router } from 'express';
 import { Project } from '../models/Project.js';
 import { crudController } from '../controllers/crud.factory.js';
 import { protect, adminOnly } from '../middleware/auth.middleware.js';
+import { validate } from '../middleware/validate.middleware.js';
 import { uploadImage } from '../config/cloudinary.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { ok } from '../utils/ApiResponse.js';
+import { createProjectSchema, updateProjectSchema } from '../validators/project.validator.js';
 
 const ctrl = crudController(Project, {
   searchFields: ['title', 'shortDescription'],
@@ -24,8 +26,8 @@ router.post('/:id/view', asyncHandler(async (req, res) => {
   return ok(res, null, 'View recorded');
 }));
 
-router.post('/', protect, adminOnly, ctrl.createOne);
-router.patch('/:id', protect, adminOnly, ctrl.updateOne);
+router.post('/', protect, adminOnly, validate(createProjectSchema), ctrl.createOne);
+router.patch('/:id', protect, adminOnly, validate(updateProjectSchema), ctrl.updateOne);
 router.delete('/:id', protect, adminOnly, ctrl.deleteOne);
 
 router.post(
