@@ -56,6 +56,22 @@ const settingsSchema = new mongoose.Schema(
       experience: { type: Boolean, default: true },
     },
 
+    // Public site "first-load" loader (Virgin-Galactic style).
+    // Rendered by the frontend Layout on initial mount. Admin-configurable.
+    loader: {
+      enabled: { type: Boolean, default: true },
+      logoUrl: { type: String, default: '', trim: true },
+      tagline: {
+        type: String,
+        default: 'Turning the impossible into the inevitable…',
+        trim: true,
+        maxlength: 120,
+      },
+      ringColor: { type: String, default: '#cc44ff', trim: true },
+      duration: { type: Number, default: 2.5, min: 0.4, max: 20 },
+      showOncePerSession: { type: Boolean, default: false },
+    },
+
     isSingleton: { type: Boolean, default: true, unique: true, sparse: true },
   },
   { timestamps: true }
