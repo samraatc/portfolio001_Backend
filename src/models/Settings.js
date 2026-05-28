@@ -68,7 +68,7 @@ const settingsSchema = new mongoose.Schema(
         maxlength: 120,
       },
       ringColor: { type: String, default: '#cc44ff', trim: true },
-      duration: { type: Number, default: 2.5, min: 0.4, max: 20 },
+      duration: { type: Number, default: 6.5, min: 0.4, max: 20 },
       showOncePerSession: { type: Boolean, default: false },
     },
 
